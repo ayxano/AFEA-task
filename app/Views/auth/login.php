@@ -52,6 +52,7 @@
                 } else {
                     errorText += messages.error;
                 }
+                alert(errorText);
                 button.attr("disabled", false);
             });
         });
