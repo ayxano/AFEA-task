@@ -43,8 +43,8 @@ $routes->get('/login', [AuthController::class, 'login']);
 $routes->get('/logout', [AuthController::class, 'logout']);
 $routes->get('/register', [AuthController::class, 'register']);
 $routes->get('/posts', [PostsController::class, 'index'], ['filter' => 'auth']);
-$routes->get('/posts/(:num)', [PostsController::class, 'getBlogPost', ['filter' => 'auth']]);
-$routes->get('/posts/new', [PostsController::class, 'addPost', ['filter' => 'auth']]);
+$routes->get('/posts/(:num)', [PostsController::class, 'getBlogPost'], ['filter' => 'auth']);
+$routes->get('/posts/new', [PostsController::class, 'addPost'], ['filter' => 'auth']);
 
 
 // start API routes
