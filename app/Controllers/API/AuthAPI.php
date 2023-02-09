@@ -29,11 +29,11 @@ class AuthAPI extends BaseController
             $data = $user->where('email', $email)->first();
             if($data === null)
             {
-                throw new \Exception('Email not correct!');
+                throw new \Exception('Email/Password not correct!');
             }
             if(password_verify($password, $data['pass']) === false)
             {
-                throw new \Exception('Password not correct!');
+                throw new \Exception('Email/Password not correct!');
             }
             session()->set('user', [
                 'id' => $data['id'],
