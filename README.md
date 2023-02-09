@@ -6,7 +6,9 @@ Instructions:
 3) Build app image with docker compose: `sudo docker-compose build app`
 4) Run docker compose: `sudo docker-compose up -d`
 5) Switch to app container: `sudo docker-compose exec app bash`
+
 5.1) Then install packages with composer inside the container: `composer install`
+
 5.2) Then migrate to DB inside container: `php spark migrate`
 
 Project documentation:
