@@ -2,16 +2,19 @@
 namespace App\Controllers;
 
 use App\Models\PostsModel;
-use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Response;
+use App\Exceptions\AccessDeniedException;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class PostsController extends BaseController
 {
+    public function __construct(private PostsModel $postModel = new PostsModel())
+    {
+    }
     public function index() : Response
     {
-        $posts = new PostsModel();
-        $userId = session('user')['id'];
-        $userPosts = $posts->where('user_id', $userId)->findAll();
+        $userId = user()['id'];
+        $userPosts = $this->postModel->getPostsByUserId($userId);
         return $this->response->setBody(view('posts', [
             'userPosts' => $userPosts
         ]));
@@ -19,15 +22,15 @@ class PostsController extends BaseController
 
     public function getBlogPost(int $postId) : Response
     {
-        $post = new PostsModel();
-        $userId = session('user')['id'];
-        $userPost = $post
-            ->where('user_id', $userId)
-            ->where('id', $postId)
-            ->first();
+        $userId = user()['id'];
+        $userPost = $this->postModel->getBlogPost($postId);
         if($userPost === null)
         {
             throw new PageNotFoundException('Post not found!');
+        }
+        if($userPost['user_id'] !== $userId)
+        {
+            throw new AccessDeniedException('Access denied!');
         }
         return $this->response->setBody(view('post_detail', [
             'post' => $userPost

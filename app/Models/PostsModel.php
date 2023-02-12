@@ -14,8 +14,13 @@ class PostsModel extends Model
         'tags'
     ];
 
+    public function getBlogPost(int $id)
+    {
+        return $this->find($id);
+    }
+
     public function getPostsByUserId(int $userId)
     {
-        return $this->where(['user_id' => $userId])->first();
+        return $this->where('user_id', $userId)->findAll();
     }
 }
