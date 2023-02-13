@@ -1,4 +1,6 @@
-<footer>
-    <h6>Footer</h6>
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <span class="text-muted">Place sticky footer content here.</span>
+  </div>
 </footer>
 <?= $this->renderSection('scripts') ?>

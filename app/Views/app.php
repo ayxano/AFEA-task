@@ -11,12 +11,15 @@
     <title>Document</title>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
     <?= $this->include('navbar') ?>
-    <div class="content" style="margin-top: 10vh;">
-        <?= $this->renderSection('content') ?>
-    </div>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <?= $this->renderSection('content') ?>
+        </div>
+    </main>
 </body>
 <?= script_tag('assets/js/app.js'); ?>
 <?= $this->include('footer') ?>
+
 </html>
