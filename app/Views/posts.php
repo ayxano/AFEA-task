@@ -5,7 +5,7 @@
     <ul>
         <? foreach($userPosts as $post): ?>
             <li>
-                <?= anchor('posts/' . $post['id'], $post['title']) ?>
+                <?= anchor('posts/' . $post->getId(), $post->getTitle()) ?>
             </li>
         <? endforeach; ?>
     </ul>

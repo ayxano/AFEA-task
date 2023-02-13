@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Entities\PostEntity;
 
 class PostsModel extends Model
 {
     protected $table = 'posts';
+    protected $returnType = PostEntity::class;
     protected $allowedFields = [
         'user_id',
         'title',

@@ -8,13 +8,13 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 
 class PostsController extends BaseController
 {
-    public function __construct(private PostsModel $postModel = new PostsModel())
-    {
-    }
+    public function __construct(
+        private PostsModel $model = new PostsModel
+    ) {}
     public function index() : Response
     {
         $userId = user()['id'];
-        $userPosts = $this->postModel->getPostsByUserId($userId);
+        $userPosts = $this->model->getPostsByUserId($userId);
         return $this->response->setBody(view('posts', [
             'userPosts' => $userPosts
         ]));
@@ -23,12 +23,12 @@ class PostsController extends BaseController
     public function getBlogPost(int $postId) : Response
     {
         $userId = user()['id'];
-        $userPost = $this->postModel->getBlogPost($postId);
+        $userPost = $this->model->getBlogPost($postId);
         if($userPost === null)
         {
             throw new PageNotFoundException('Post not found!');
         }
-        if($userPost['user_id'] !== $userId)
+        if($userPost->getUserId() != $userId)
         {
             throw new AccessDeniedException('Access denied!');
         }
