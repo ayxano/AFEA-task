@@ -29,7 +29,7 @@ class PostAPI extends BaseController
             }
             $this->entity
             ->setId(null)
-            ->setUserId(user()['id'])
+            ->setUserId(user()->getId())
             ->setTitle($this->request->getVar('title'))
             ->setContent($this->request->getVar('content'))
             ->setTags($this->request->getVar('tags'));
