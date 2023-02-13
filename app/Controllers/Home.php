@@ -6,10 +6,12 @@ use CodeIgniter\HTTP\Response;
 
 class Home extends BaseController
 {
+    public function __construct(
+        private PostsModel $model = new PostsModel
+    ) {}
     public function index() : Response
     {
-        $posts = new PostsModel();
-        $postsCount = $posts->countAllResults();
+        $postsCount = $this->model->countAllResults();
         return $this->response->setBody(view('homepage', [
             'postsCount' => $postsCount
         ]));
