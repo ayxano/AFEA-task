@@ -7,7 +7,6 @@ use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\Validation\Exceptions\ValidationException;
-use Exception;
 
 class AuthAPI extends BaseController
 {
@@ -70,6 +69,8 @@ class AuthAPI extends BaseController
             ->setEmail($this->request->getVar('email'))
             ->setPassword(password_hash($this->request->getVar('password'), PASSWORD_DEFAULT));
             $this->model->save($this->entity);
+            $this->entity->setId($this->model->getInsertID());
+            session()->set('user', $this->entity);
             return $this->respond(['status' => 200, 'redirect' => url_to('PostsController::index')]);
         } catch (\Throwable $th) {
             if($th instanceof ValidationException)
