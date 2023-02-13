@@ -5,17 +5,17 @@
         <div class="row justify-content-md-center">
             <div class="col-5">
                 <h2>Login</h2>
-                <form action="<?php echo base_url(); ?>/api/login" method="post" class="ajaxForm">
+                <?= form_open('api/login', ['class' => 'ajaxForm']); ?>
                     <div class="form-group mb-3">
-                        <input type="email" name="email" placeholder="Email" class="form-control">
+                        <?= form_input(['class' => 'form-control', 'name' => 'email', 'placeholder' => 'Email', 'type' => 'email']); ?>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="password" name="password" placeholder="Password" class="form-control">
+                        <?= form_password(['class' => 'form-control', 'name' => 'password', 'placeholder' => 'Password', 'type' => 'password']); ?>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" id="submitButton" class="btn btn-dark">Login</button>
+                        <?= form_submit(['class' => 'btn btn-dark btn-block'], 'Login'); ?>
                     </div>
-                </form>
+                <?= form_close(); ?>
             </div>
         </div>
     </div>
