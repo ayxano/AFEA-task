@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?= link_tag('//cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'); ?>
+    <?= script_tag('//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js'); ?>
+    <?= script_tag('//cdn.jsdelivr.net/npm/sweetalert2@11'); ?>
     <title>Document</title>
 </head>
 
@@ -17,6 +17,6 @@
         <?= $this->renderSection('content') ?>
     </div>
 </body>
-<script type="text/javascript" src="/assets/js/app.js"></script>
+<?= script_tag('assets/js/app.js'); ?>
 <?= $this->include('footer') ?>
 </html>
