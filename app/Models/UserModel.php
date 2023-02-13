@@ -15,4 +15,24 @@ class UserModel extends Model{
         'pass',
         'created_at'
     ];
+
+    /**
+     * @param string $email
+     * @param string $password
+     * 
+     * @return UserEntity
+     */
+    public function getUser(string $email, string $password) : UserEntity | null
+    {
+        $user = $this->where('email', $email)->first();
+        if($user === null)
+        {
+            return null;
+        }
+        if(password_verify($password, $user->getPassword()) === false)
+        {
+            return null;
+        }
+        return $user;
+    }
 }

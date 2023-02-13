@@ -1,10 +1,12 @@
 <?php
 namespace App\Controllers\API;
 
-use App\Controllers\BaseController;
+use App\Models\UserModel;
 use App\Entities\UserEntity;
 use App\Requests\LoginRequest;
+use CodeIgniter\HTTP\Response;
 use CodeIgniter\API\ResponseTrait;
+use App\Controllers\BaseController;
 use App\Requests\RegisterRequest;
 use CodeIgniter\Validation\Exceptions\ValidationException;
 
@@ -24,12 +26,8 @@ class AuthAPI extends BaseController
             }
             $email = $this->request->getVar('email');
             $password = $this->request->getVar('password');
-            $user = $this->model->where('email', $email)->first();
+            $user = $this->model->getUser($email, $password);
             if($user === null)
-            {
-                throw new \Exception('Email/Password not correct!');
-            }
-            if(password_verify($password, $user->getPassword()) === false)
             {
                 throw new \Exception('Email/Password not correct!');
             }
