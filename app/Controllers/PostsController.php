@@ -14,7 +14,7 @@ class PostsController extends BaseController
     public function index() : Response
     {
         $userPosts = $this->model->getPostsByUserId(user()->getId());
-        return $this->response->setBody(view('posts', [
+        return $this->response->setBody(view('post/list', [
             'userPosts' => $userPosts
         ]));
     }
@@ -30,13 +30,13 @@ class PostsController extends BaseController
         {
             throw new AccessDeniedException('Access denied!');
         }
-        return $this->response->setBody(view('post_detail', [
+        return $this->response->setBody(view('post/detail', [
             'post' => $post
         ]));
     }
 
     public function addPost() : Response
     {
-        return $this->response->setBody(view('post_add'));
+        return $this->response->setBody(view('post/add'));
     }
 }
