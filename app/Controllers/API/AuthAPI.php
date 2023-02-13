@@ -3,9 +3,9 @@ namespace App\Controllers\API;
 
 use App\Controllers\BaseController;
 use App\Entities\UserEntity;
-use App\Models\UserModel;
+use App\Requests\LoginRequest;
 use CodeIgniter\API\ResponseTrait;
-use CodeIgniter\HTTP\Response;
+use App\Requests\RegisterRequest;
 use CodeIgniter\Validation\Exceptions\ValidationException;
 
 class AuthAPI extends BaseController
@@ -18,11 +18,7 @@ class AuthAPI extends BaseController
     public function login() : Response
     {
         try {
-            $rules = [
-                'email'     =>  'required|valid_email',
-                'password'  =>  'required'
-            ];
-            if($this->validate($rules) === false)
+            if($this->validate(LoginRequest::rules()) === false)
             {
                 throw new ValidationException();
             }
@@ -51,14 +47,7 @@ class AuthAPI extends BaseController
     public function register() : Response
     {
         try {
-            $rules = [
-                'first_name'            => 'required|min_length[2]|max_length[50]',
-                'last_name'             => 'required|min_length[2]|max_length[50]',
-                'email'                 => 'required|min_length[4]|max_length[100]|valid_email|is_unique[users.email]',
-                'password'              => 'required|min_length[4]|max_length[50]',
-                'confirmpassword'       => 'matches[password]'
-            ];
-            if($this->validate($rules) === false)
+            if($this->validate(RegisterRequest::rules()) === false)
             {
                 throw new ValidationException();
             }

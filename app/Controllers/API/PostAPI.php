@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\Validation\Exceptions\ValidationException;
 use App\Models\PostsModel;
+use App\Requests\PostRequest;
 
 class PostAPI extends BaseController
 {
@@ -18,12 +19,7 @@ class PostAPI extends BaseController
     public function addPost() : Response
     {
         try {
-            $rules = [
-                'title'                 => 'required|min_length[2]|max_length[50]',
-                'content'               => 'required|min_length[2]',
-                'tags'                  => 'required',
-            ];
-            if($this->validate($rules) === false)
+            if($this->validate(PostRequest::rules()) === false)
             {
                 throw new ValidationException();
             }
