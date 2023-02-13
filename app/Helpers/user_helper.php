@@ -1,17 +1,19 @@
 <?php
+
+use App\Entities\UserEntity;
 if(!function_exists('isLogged'))
 {
     function isLogged() : bool
     {
-        return isset(session('user')['id']);
+        return session('user') !== null;
     }
 }
 
 
 if(!function_exists('user'))
 {
-    function user() : array
+    function user() : UserEntity
     {
-        return session('user') ?? null;
+        return session('user');
     }
 }

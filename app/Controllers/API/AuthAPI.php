@@ -2,9 +2,9 @@
 namespace App\Controllers\API;
 
 use App\Controllers\BaseController;
+use App\Entities\UserEntity;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
-use CodeIgniter\Entity\Cast\JsonCast;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\Validation\Exceptions\ValidationException;
 use Exception;
@@ -12,10 +12,13 @@ use Exception;
 class AuthAPI extends BaseController
 {
     use ResponseTrait;
+    public function __construct(
+        private UserModel $model = new UserModel,
+        private UserEntity $entity = new UserEntity
+    ) {}
     public function login() : Response
     {
         try {
-            $user = new UserModel();
             $rules = [
                 'email'     =>  'required|valid_email',
                 'password'  =>  'required'
@@ -26,22 +29,16 @@ class AuthAPI extends BaseController
             }
             $email = $this->request->getVar('email');
             $password = $this->request->getVar('password');
-            $data = $user->where('email', $email)->first();
-            if($data === null)
+            $user = $this->model->where('email', $email)->first();
+            if($user === null)
             {
                 throw new \Exception('Email/Password not correct!');
             }
-            if(password_verify($password, $data['pass']) === false)
+            if(password_verify($password, $user->getPassword()) === false)
             {
                 throw new \Exception('Email/Password not correct!');
             }
-            session()->set('user', [
-                'id' => $data['id'],
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'isLoggedIn' => TRUE
-            ]);
+            session()->set('user', $user);
             return $this->respond(['status' => 200, 'redirect' => url_to('PostsController::index')]);
         } catch (\Throwable $th) {
             if($th instanceof ValidationException)
@@ -55,7 +52,6 @@ class AuthAPI extends BaseController
     public function register() : Response
     {
         try {
-            $user = new UserModel();
             $rules = [
                 'first_name'            => 'required|min_length[2]|max_length[50]',
                 'last_name'             => 'required|min_length[2]|max_length[50]',
@@ -67,13 +63,13 @@ class AuthAPI extends BaseController
             {
                 throw new ValidationException();
             }
-            $data = [
-                'first_name'     => $this->request->getVar('first_name'),
-                'last_name'     => $this->request->getVar('last_name'),
-                'email'    => $this->request->getVar('email'),
-                'pass' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
-            ];
-            $user->save($data);
+            $this->entity
+            ->setId(null)
+            ->setFirstName($this->request->getVar('first_name'))
+            ->setLastName($this->request->getVar('last_name'))
+            ->setEmail($this->request->getVar('email'))
+            ->setPassword(password_hash($this->request->getVar('password'), PASSWORD_DEFAULT));
+            $this->model->save($this->entity);
             return $this->respond(['status' => 200, 'redirect' => url_to('PostsController::index')]);
         } catch (\Throwable $th) {
             if($th instanceof ValidationException)

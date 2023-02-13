@@ -13,8 +13,7 @@ class PostsController extends BaseController
     ) {}
     public function index() : Response
     {
-        $userId = user()['id'];
-        $userPosts = $this->model->getPostsByUserId($userId);
+        $userPosts = $this->model->getPostsByUserId(user()->getId());
         return $this->response->setBody(view('posts', [
             'userPosts' => $userPosts
         ]));
@@ -22,18 +21,17 @@ class PostsController extends BaseController
 
     public function getBlogPost(int $postId) : Response
     {
-        $userId = user()['id'];
-        $userPost = $this->model->getBlogPost($postId);
-        if($userPost === null)
+        $post = $this->model->getBlogPost($postId);
+        if($post === null)
         {
             throw new PageNotFoundException('Post not found!');
         }
-        if($userPost->getUserId() != $userId)
+        if($post->getUserId() !== user()->getId())
         {
             throw new AccessDeniedException('Access denied!');
         }
         return $this->response->setBody(view('post_detail', [
-            'post' => $userPost
+            'post' => $post
         ]));
     }
 
